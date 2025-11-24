@@ -12,3 +12,5 @@
 - Updated home page copy and metadata; ran `pnpm typecheck` clean.
 - Fixed `pnpm deploy` failures: resolved ESLint/Next App Router prop types, tightened Better Auth typings for D1/KV, added BETTER_AUTH_SECRET fallback, and corrected D1_DB binding in `wrangler.jsonc`.
 - Deployment now succeeds via `opennextjs-cloudflare deploy`; asset upload + Worker publish confirmed at `wedding-invitation.hutama39.workers.dev` (dev preview).
+- Added client `/sign-in` page (email/password) and updated admin redirect/home CTA to avoid hitting Better Auth API GET endpoints; fixed Workers 404 on sign-in links.
+- Removed duplicate D1/R2 bindings to satisfy Wrangler deploy; latest deploy succeeds with bindings KV_CACHE, D1_DB, R2_BUCKET, ASSETS.

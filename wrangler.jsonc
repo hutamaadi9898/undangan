@@ -28,20 +28,11 @@
 		{
 			"binding": "R2_BUCKET",
 			"bucket_name": "wedding-uploads"
-		},
-		{
-			"bucket_name": "wedding-uploads",
-			"binding": "wedding_uploads"
 		}
 	],
 	"d1_databases": [
 		{
 			"binding": "D1_DB",
-			"database_name": "wedding-db",
-			"database_id": "7c21c1fa-e140-4695-a7e3-62afb2e585a4"
-		},
-		{
-			"binding": "wedding_db",
 			"database_name": "wedding-db",
 			"database_id": "7c21c1fa-e140-4695-a7e3-62afb2e585a4"
 		}

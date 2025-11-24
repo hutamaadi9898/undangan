@@ -14,8 +14,7 @@ export default async function AdminLayout({ children }: Props) {
 	const session = await getServerSession(headerList);
 
 	if (!session?.user) {
-		// Better Auth exposes sign-in endpoints under /api/auth; redirect to the email/password flow.
-		redirect("/api/auth/sign-in/email?redirect=/admin");
+		redirect("/sign-in?redirect=/admin");
 	}
 
 	return (

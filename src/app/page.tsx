@@ -22,7 +22,7 @@ export default function Home() {
 					</Link>
 					<Link
 						className="inline-flex items-center rounded-lg border border-slate-500 px-4 py-2 text-sm font-semibold text-slate-100"
-						href="/api/auth/sign-in/email"
+						href="/sign-in"
 					>
 						Sign in
 					</Link>
