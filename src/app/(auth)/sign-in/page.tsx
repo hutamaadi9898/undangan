@@ -115,7 +115,7 @@ function SignInForm() {
 				</form>
 
 				<p className="text-center text-xs text-slate-500">
-					Tip: set `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your env, then hit "Create admin account" once to seed.
+					Tip: set `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your env, then click the Create admin account button once to seed.
 				</p>
 			</main>
 		</div>
