@@ -17,7 +17,26 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "KV_CACHE",
+			"id": "__KV_CACHE_ID__"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2_BUCKET",
+			"bucket_name": "wedding-uploads"
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "D1_DB",
+			"database_name": "wedding-invitation",
+			"database_id": "__D1_DB_ID__"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

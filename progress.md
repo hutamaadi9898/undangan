@@ -1,0 +1,12 @@
+2025-11-24
+- Added `plan.md` with Phase 0 set as MVP and atomic checklists.
+- Logged agent guardrails in `AGENTS.md` based on stack requirements.
+- Recorded deployment tutorial stub in `tutorial.md` (for prod readiness).
+- Verified TypeScript `strict` is already enabled and noted in plan.
+- Pulled OpenNext Cloudflare docs via Context7 to ground the plan.
+- Researched Better Auth and `better-auth-cloudflare` via Context7; updated plan and guardrails to standardize on Better Auth for admin.
+- Installed Better Auth + Cloudflare adapter, Drizzle ORM/Kit, Zod; added typecheck/migration scripts and Wrangler bindings scaffold.
+- Created Drizzle schema for weddings/pages/rsvps/photos/themes plus generated auth schema via `@better-auth/cli`; migrations `0000` and `0001` produced.
+- Implemented DB client, KV cache/rate-limit helper, R2 presign helper, and Better Auth singleton with `/api/auth/[...all]` route.
+- Built public invite page with KV-backed fetch + RSVP form, RSVP API with Zod validation + rate limiting, and admin shell (auth gate) with wedding CRUD + RSVP dashboard.
+- Updated home page copy and metadata; ran `pnpm typecheck` clean.

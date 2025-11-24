@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1763987194651,
+      "tag": "0000_freezing_namor",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1763987887271,
+      "tag": "0001_wonderful_sentry",
+      "breakpoints": true
+    }
+  ]
+}
