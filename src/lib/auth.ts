@@ -1,9 +1,8 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { betterAuth } from "better-auth";
 import { withCloudflare } from "better-auth-cloudflare";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import type { IncomingRequestCfProperties, KVNamespace, R2Bucket } from "@cloudflare/workers-types";
-import { drizzle } from "drizzle-orm/d1";
+import type { D1Database, IncomingRequestCfProperties, KVNamespace } from "@cloudflare/workers-types";
+import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
 import type { Env } from "@/types/env";
 import * as appSchema from "./db/schema";
 import * as authSchema from "./db/auth-schema";
@@ -14,35 +13,41 @@ declare const global: typeof globalThis & {
 	__auth__: AuthInstance | undefined;
 };
 
-const buildDb = (env?: Env) => {
-	const schema = { ...authSchema, ...appSchema };
-	return env ? drizzle(env.D1_DB, { schema }) : ({} as any);
+type CombinedSchema = typeof appSchema & typeof authSchema;
+
+const buildDb = (
+	env?: Env
+): (DrizzleD1Database<CombinedSchema> & { $client: D1Database }) | undefined => {
+	if (!env) return undefined;
+	const schema: CombinedSchema = { ...authSchema, ...appSchema };
+	const db = drizzle(env.D1_DB, { schema });
+	return db as DrizzleD1Database<CombinedSchema> & { $client: D1Database };
 };
 
-export const createAuth = (env?: Env, cf?: IncomingRequestCfProperties): AuthInstance =>
-	betterAuth({
-		...withCloudflare(
+export const createAuth = (env?: Env, cf?: IncomingRequestCfProperties): AuthInstance => {
+	const db = buildDb(env);
+	const kv = env?.KV_CACHE as KVNamespace<string> | undefined;
+	const secret =
+		(env as { BETTER_AUTH_SECRET?: string } | undefined)?.BETTER_AUTH_SECRET ??
+		process.env.BETTER_AUTH_SECRET ??
+		"dev-secret-change-me";
+
+	return betterAuth(
+		withCloudflare(
 			{
 				cf: cf ?? ({} as IncomingRequestCfProperties),
-				d1: env
-					? {
-							db: buildDb(env)
-						}
-					: undefined,
-				kv: env?.KV_CACHE ? (env.KV_CACHE as unknown as KVNamespace) : undefined,
-				r2: env?.R2_BUCKET ? { bucket: env.R2_BUCKET as any, maxFileSize: 10 * 1024 * 1024 } : undefined
+				d1: db ? { db } : undefined,
+				kv,
+				r2: env?.R2_BUCKET ? { bucket: env.R2_BUCKET, maxFileSize: 10 * 1024 * 1024 } : undefined
 			},
 			{
 				emailAndPassword: { enabled: true },
-				rateLimit: { enabled: true, window: 60, max: 100 }
+				rateLimit: { enabled: true, window: 60, max: 100 },
+				secret
 			}
-		),
-		...(env
-			? {}
-			: {
-					database: drizzleAdapter(buildDb(env), { provider: "sqlite", usePlural: true })
-				})
-	});
+		)
+	);
+};
 
 export const getAuth = async (): Promise<AuthInstance> => {
 	if (global.__auth__) return global.__auth__;

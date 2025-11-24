@@ -32,7 +32,7 @@ type InviteModel = {
 const parseJson = (raw: string) => {
 	try {
 		return JSON.parse(raw) as Record<string, unknown>;
-	} catch (err) {
+	} catch {
 		return {};
 	}
 };
@@ -80,11 +80,15 @@ const loadInvite = async (slug: string): Promise<InviteModel | null> => {
 };
 
 type PageProps = {
-	params: { slug: string };
+	params?: Promise<{ slug?: string | string[] }>;
 };
 
 export default async function InvitePage({ params }: PageProps) {
-	const data = await loadInvite(params.slug);
+	const resolvedParams = (await params) ?? {};
+	const slug = Array.isArray(resolvedParams.slug) ? resolvedParams.slug[0] : resolvedParams.slug;
+	if (!slug) return notFound();
+
+	const data = await loadInvite(slug);
 	if (!data) return notFound();
 
 	return (

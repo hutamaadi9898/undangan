@@ -352,13 +352,6 @@
             "slug"
           ],
           "isUnique": true
-        },
-        "weddings_slug_idx": {
-          "name": "weddings_slug_idx",
-          "columns": [
-            "slug"
-          ],
-          "isUnique": true
         }
       },
       "foreignKeys": {},

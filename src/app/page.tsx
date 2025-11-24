@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
 	return (
 		<div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-50">
@@ -11,20 +13,20 @@ export default function Home() {
 						Next.js 15 on OpenNext for Cloudflare. Admin at <code className="font-mono">/admin</code>, public invites at
 						<code className="font-mono"> /&lt;slug&gt;</code>, RSVPs via server actions + D1.
 					</p>
-					<div className="flex flex-wrap gap-3">
-						<a
-							className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"
-							href="/admin"
-						>
-							Open Admin
-						</a>
-						<a
-							className="inline-flex items-center rounded-lg border border-slate-500 px-4 py-2 text-sm font-semibold text-slate-100"
-							href="/api/auth/sign-in/email"
-						>
-							Sign in
-						</a>
-					</div>
+				<div className="flex flex-wrap gap-3">
+					<Link
+						className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"
+						href="/admin"
+					>
+						Open Admin
+					</Link>
+					<Link
+						className="inline-flex items-center rounded-lg border border-slate-500 px-4 py-2 text-sm font-semibold text-slate-100"
+						href="/api/auth/sign-in/email"
+					>
+						Sign in
+					</Link>
+				</div>
 				</section>
 				<section className="grid gap-4 sm:grid-cols-2">
 					<div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">

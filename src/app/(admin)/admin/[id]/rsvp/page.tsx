@@ -7,19 +7,24 @@ import { rsvps, weddings } from "@/lib/db/schema";
 
 export const runtime = "nodejs";
 
-type PageProps = { params: { id: string } };
+type PageProps = { params?: Promise<{ id?: string | string[] }> };
 
 export default async function RsvpDashboard({ params }: PageProps) {
+	const resolvedParams = (await params) ?? {};
+	const weddingId = Array.isArray(resolvedParams.id) ? resolvedParams.id[0] : resolvedParams.id;
+
+	if (!weddingId) return notFound();
+
 	const { env } = await getCloudflareContext({ async: true });
 	const db = await getDb(env as Env);
 
 	const wedding = await db.query.weddings.findFirst({
-		where: eq(weddings.id, params.id)
+		where: eq(weddings.id, weddingId)
 	});
 
 	if (!wedding) return notFound();
 
-	const responses = await db.select().from(rsvps).where(eq(rsvps.weddingId, params.id)).orderBy(desc(rsvps.createdAt));
+	const responses = await db.select().from(rsvps).where(eq(rsvps.weddingId, weddingId)).orderBy(desc(rsvps.createdAt));
 
 	return (
 		<div className="space-y-6">

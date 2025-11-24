@@ -47,14 +47,21 @@ const updateWedding = async (id: string, formData: FormData) => {
 	revalidatePath(`/admin/${id}/edit`);
 };
 
-type PageProps = { params: { id: string } };
+type PageProps = { params?: Promise<{ id?: string | string[] }> };
 
 export default async function EditWeddingPage({ params }: PageProps) {
+	const resolvedParams = (await params) ?? {};
+	const weddingId = Array.isArray(resolvedParams.id) ? resolvedParams.id[0] : resolvedParams.id;
+
+	if (!weddingId) {
+		redirect("/admin");
+	}
+
 	const { env } = await getCloudflareContext({ async: true });
 	const db = await getDb(env as Env);
 
 	const wedding = await db.query.weddings.findFirst({
-		where: eq(weddings.id, params.id)
+		where: eq(weddings.id, weddingId)
 	});
 
 	if (!wedding) {

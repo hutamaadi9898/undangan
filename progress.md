@@ -10,3 +10,5 @@
 - Implemented DB client, KV cache/rate-limit helper, R2 presign helper, and Better Auth singleton with `/api/auth/[...all]` route.
 - Built public invite page with KV-backed fetch + RSVP form, RSVP API with Zod validation + rate limiting, and admin shell (auth gate) with wedding CRUD + RSVP dashboard.
 - Updated home page copy and metadata; ran `pnpm typecheck` clean.
+- Fixed `pnpm deploy` failures: resolved ESLint/Next App Router prop types, tightened Better Auth typings for D1/KV, added BETTER_AUTH_SECRET fallback, and corrected D1_DB binding in `wrangler.jsonc`.
+- Deployment now succeeds via `opennextjs-cloudflare deploy`; asset upload + Worker publish confirmed at `wedding-invitation.hutama39.workers.dev` (dev preview).
