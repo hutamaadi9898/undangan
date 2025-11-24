@@ -4,7 +4,7 @@ Prereqs
 - Cloudflare account with D1, R2, and KV access.
 - Wrangler latest installed (`pnpm dlx wrangler --version` to confirm).
 - pnpm installed; repo dependencies installed (`pnpm install`).
-- Required secrets ready: `NEXT_PUBLIC_APP_URL`, `ADMIN_EMAIL`, auth provider keys, email provider key, `R2_PUBLIC_BASE_URL`.
+- Required secrets ready: `NEXT_PUBLIC_APP_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, auth provider keys, email provider key, `R2_PUBLIC_BASE_URL`.
 
 1) Create Cloudflare resources
 - D1: `wrangler d1 create wedding-db` → bind name `D1_DB`.
@@ -27,7 +27,7 @@ Prereqs
 - For pre-prod verification: `pnpm preview` to push a preview Worker.
 
 5) Configure environment & secrets
-- `wrangler secret put ADMIN_EMAIL` (and other secrets) in the target env.
+- `wrangler secret put ADMIN_EMAIL` and `wrangler secret put ADMIN_PASSWORD` (and other secrets) in the target env.
 - Non-secret vars go in `wrangler.jsonc` `vars` block or per-environment overrides.
 - Keep `.dev.vars` for local only; never commit secrets.
 

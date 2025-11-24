@@ -1,3 +1,5 @@
 # Load .env.development* files when running `wrangler dev`
 NEXTJS_ENV=development
 BETTER_AUTH_SECRET=replace-with-64-hex-secret
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=change-me

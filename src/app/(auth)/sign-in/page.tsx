@@ -42,13 +42,35 @@ function SignInForm() {
 		router.push(redirectTo);
 	};
 
+	const onCreateAdmin = async () => {
+		setError(null);
+		setLoading(true);
+
+		const res = await fetch("/api/auth/sign-up/email", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ email, password, callbackURL: redirectTo })
+		});
+
+		if (!res.ok) {
+			const body = (await res.json().catch(() => ({}))) as { message?: string; error?: string };
+			setError(body.message ?? body.error ?? "Sign up failed. Confirm admin email/password.");
+			setLoading(false);
+			return;
+		}
+
+		router.push(redirectTo);
+	};
+
 	return (
 		<div className="min-h-screen bg-slate-950 text-slate-50">
 			<main className="mx-auto flex w-full max-w-md flex-col gap-6 px-6 py-14">
 				<div className="space-y-2 text-center">
 					<p className="text-xs uppercase tracking-[0.3em] text-slate-500">Admin access</p>
 					<h1 className="text-2xl font-semibold">Sign in</h1>
-					<p className="text-sm text-slate-400">Use your admin email and password to continue.</p>
+					<p className="text-sm text-slate-400">
+						Only the configured admin email can access the studio.
+					</p>
 				</div>
 
 				<form onSubmit={onSubmit} className="space-y-4 rounded-xl border border-slate-800 bg-slate-900/70 p-6">
@@ -80,12 +102,20 @@ function SignInForm() {
 						disabled={loading}
 						className="inline-flex w-full items-center justify-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 disabled:opacity-70"
 					>
-						{loading ? "Signing in…" : "Sign in"}
+						{loading ? "Working…" : "Sign in"}
+					</button>
+					<button
+						type="button"
+						disabled={loading}
+						onClick={onCreateAdmin}
+						className="inline-flex w-full items-center justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-800 disabled:opacity-70"
+					>
+						Create admin account
 					</button>
 				</form>
 
 				<p className="text-center text-xs text-slate-500">
-					No account yet? Ask the owner to invite you.
+					Tip: set `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your env, then hit "Create admin account" once to seed.
 				</p>
 			</main>
 		</div>
@@ -103,4 +133,3 @@ function LoadingShell() {
 		</div>
 	);
 }
-

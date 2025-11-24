@@ -14,3 +14,4 @@
 - Deployment now succeeds via `opennextjs-cloudflare deploy`; asset upload + Worker publish confirmed at `wedding-invitation.hutama39.workers.dev` (dev preview).
 - Added client `/sign-in` page (email/password) and updated admin redirect/home CTA to avoid hitting Better Auth API GET endpoints; fixed Workers 404 on sign-in links.
 - Removed duplicate D1/R2 bindings to satisfy Wrangler deploy; latest deploy succeeds with bindings KV_CACHE, D1_DB, R2_BUCKET, ASSETS.
+- Locked auth down to a single env-configured admin: added Better Auth before-hook allowlist + password check, admin-only gate in layout, and sign-in page button to create the admin account with those env values.

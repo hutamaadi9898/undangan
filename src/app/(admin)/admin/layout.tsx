@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import { getServerSession } from "@/lib/auth";
+import { getAdminAllowlistEmail, getServerSession } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -12,8 +12,11 @@ type Props = {
 export default async function AdminLayout({ children }: Props) {
 	const headerList = await headers();
 	const session = await getServerSession(headerList);
+	const adminEmail = getAdminAllowlistEmail();
 
-	if (!session?.user) {
+	const userEmail = session?.user?.email?.toLowerCase();
+
+	if (!session?.user || (adminEmail && userEmail !== adminEmail)) {
 		redirect("/sign-in?redirect=/admin");
 	}
 
